@@ -21,6 +21,7 @@
      fprintf(stderr, "Usage: %s infile\n", prog);
      exit(1);
  }
+/*
 
  // List of printable tokens
  char *tokstr[] = {"+", "-", "*", "/", "intlit"};
@@ -43,7 +44,10 @@
  // if we don't have an argument. Open up the input
  // file and call scanfile() to scan the tokens in it.
 
+*/
+
  void main(int argc, char *argv[]){
+     struct ASTnode *n;
      if(argc != 2)
         usage(argv[0]);
 
@@ -54,6 +58,8 @@
         exit(1);
     }
 
-    scanfile();
+    scan(&Token);
+    n = binexpr();
+    printf("%d\n", interpretAST(n));
     exit(0);
  }

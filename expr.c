@@ -18,7 +18,7 @@ static struct ASTnode *primary(void){
     case T_INTLIT:  
         n = mkastleaf(A_INTLIT, Token.intvalue);
         scan(&Token);
-        return(n)
+        return(n);
     
     default:
         fprintf(stderr, "syntax error on line %d\n", Line);
@@ -31,7 +31,7 @@ int arithop(int tok){
     switch (tok)
     {
     case T_PLUS:
-        return (A_DD);
+        return (A_ADD);
     case T_MINUS:
         return (A_SUBTRACT);
     case T_STAR:
@@ -39,7 +39,7 @@ int arithop(int tok){
     case T_SLASH:
         return (A_DIVIDE);
     default:
-        fprintf(stderr, "unkonwn token in arithop() on line %d\n" Line);
+        fprintf(stderr, "unkonwn token in arithop() on line %d\n", Line);
         exit(1);
     }
 }
