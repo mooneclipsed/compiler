@@ -44,30 +44,59 @@ int arithop(int tok){
     }
 }
 
+
+// Operator precedence for each token
+static int OpPrec[] = { 0, 10, 10, 20, 20, 0}; 
+
+// Check that we have a binary operator and
+// return its precedence
+static int op_precedence(int tokentype){
+    int prec = OpPrec[tokentype];
+    if(prec == 0){
+        fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype);
+        exit(1);
+    }
+    return (prec);
+}
+
+
 // Return an AST tree whose root is a binary operator
-struct ASTnode *binexpr(void){
-    struct ASTnode *n, *left, *right;
-    int nodetype;
+// Parameter ptp is the previous token's precedence
+struct ASTnode *binexpr(int ptp){
+    struct ASTnode *left, *right;
+    int tokentype;
 
     // Get the integer literal on the left.
     // Fetch the next token at the same time.
     left = primary();
 
     // If no tokens left, retun just the left node.
-    if(Token.token == T_EOF)
+    tokentype = Token.token;
+    if(tokentype == T_EOF)
         return (left);
     
-    // Convert the token into a node type.
-    nodetype = arithop(Token.token);
+    // While the precedence of this token is
+    // more than that of the previous token precedence
+    while (op_precedence(tokentype) > ptp){
+        // Fetch in the next integer literal
+        scan(&Token);
 
-    // Get the next token in
-    scan(&Token);
+        // Recursively call binexpr() with the
+        // Precedence of our token to build a sub-tree
+        right = binexpr(OpPrec[tokentype]);
 
-    // Recursively get the right-hand tree
-    right = binexpr();
+        // Join that sub-tree with ours. Convert the token
+        // into an AST operation at the same time.
+        left = mkastnode(arithop(tokentype), left, right, 0);
 
-    // Now build a tree with both sub-trees
-    n = mkastnode(nodetype, left, right, 0);
-    return (n);
+        // Updata the detail of the current token.
+        // If no tokens left, return just the left node
+        tokentype = Token.token;
+        if(tokentype == T_EOF){
+            return (left);
+        }
+    }
+    
+    return (left);
 }
 

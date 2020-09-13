@@ -21,33 +21,13 @@
      fprintf(stderr, "Usage: %s infile\n", prog);
      exit(1);
  }
-/*
 
- // List of printable tokens
- char *tokstr[] = {"+", "-", "*", "/", "intlit"};
-
- // Loop scanning in all the tokens in the input file.
- // Print out details of each token found.
- static void scanfile(){
-    struct token T;
-
-    while(scan(&T)){
-        printf("Token %s", tokstr[T.token]);
-        if(T.token == T_INTLIT)
-            printf(", value %d", T.intvalue);
-        printf("\n");
-    }  
-       
- }
-
- // Main program: check arguments and print a suage
+ // Main program: check argument and print a usage
  // if we don't have an argument. Open up the input
  // file and call scanfile() to scan the tokens in it.
-
-*/
-
  void main(int argc, char *argv[]){
      struct ASTnode *n;
+
      if(argc != 2)
         usage(argv[0]);
 
@@ -59,7 +39,7 @@
     }
 
     scan(&Token);
-    n = binexpr();
+    n = binexpr(0);
     printf("%d\n", interpretAST(n));
     exit(0);
  }
