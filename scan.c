@@ -93,7 +93,7 @@ static int keyword(char *s){
   switch (*s)
   {
   case 'p': 
-    if(!strcmp(s, 'print'))
+    if(!strcmp(s, "print"))
       return (T_PRINT);
     break;
   
