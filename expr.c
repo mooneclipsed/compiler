@@ -3,7 +3,7 @@
 #include "decl.h"
 
 // Parsing of expressions
-// Copyright (c) 2019 Warren Toomey, GPL3
+
 
 // Parse a primary factor and return an
 // AST node representing it.
@@ -66,9 +66,9 @@ struct ASTnode *binexpr(int ptp) {
   // Fetch the next token at the same time.
   left = primary();
 
-  // If no tokens left, return just the left node
+  // If hit s semicolon, return just the left node
   tokentype = Token.token;
-  if (tokentype == T_EOF)
+  if (tokentype == T_SEMI)
     return (left);
 
   // While the precedence of this token is
@@ -86,9 +86,9 @@ struct ASTnode *binexpr(int ptp) {
     left = mkastnode(arithop(tokentype), left, right, 0);
 
     // Update the details of the current token.
-    // If no tokens left, return just the left node
+    // If hit a semicolon, return just the left node
     tokentype = Token.token;
-    if (tokentype == T_EOF)
+    if (tokentype == T_SEMI)
       return (left);
   }
 
