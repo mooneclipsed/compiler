@@ -96,6 +96,10 @@ static int keyword(char *s){
     if(!strcmp(s, "print"))
       return (T_PRINT);
     break;
+  case 'i':
+    if(!strcmp(s, "int"))
+      return(T_INT);
+    break;
   
   }
   return 0;
@@ -130,6 +134,9 @@ int scan(struct token *t) {
   case ';':
     t->token = T_SEMI;
     break;
+  case '=':
+    t->token = T_EQUALS;
+    break;
   default:
 
     // If it's a digit, scan the
@@ -148,13 +155,12 @@ int scan(struct token *t) {
         t->token = tokentype;
         break;
       }
-      // Not a recognised keyword, so an error for now
-      printf("Unrecognised symbol %s on line %d\n", Text, Line);
-      exit(1);
+      // Not a recognised keyword, so it must be an identifier
+      t->token = T_IDENT;
+      break;
     }
 
-    printf("Unrecognised character %c on line %d\n", c, Line);
-    exit(1);
+    fatalc("Unrecognised character", c);
   }
 
   // We found a token

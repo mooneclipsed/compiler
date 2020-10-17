@@ -27,18 +27,16 @@ static int alloc_register(void)
       return(i);
     }
   }
-  fprintf(stderr, "Out of registers!\n");
-  exit(1);
+  fatal("Out of registers");
 }
 
 // Return a register to the list of available registers.
 // Check to see if it's not already there.
 static void free_register(int reg)
 {
-  if (freereg[reg] != 0) {
-    fprintf(stderr, "Error trying to free register %d\n", reg);
-    exit(1);
-  }
+  if (freereg[reg] != 0) 
+      fatald("Error trying to free register", reg);
+  
   freereg[reg]= 1;
 }
 
@@ -84,15 +82,25 @@ void cgpostamble()
 
 // Load an integer literal value into a register.
 // Return the number of the register
-int cgload(int value) {
+int cgloadint(int value) {
 
   // Get a new register
-  int r= alloc_register();
+  int r = alloc_register();
 
   // Print out the code to initialise it
   fprintf(Outfile, "\tmovq\t$%d, %s\n", value, reglist[r]);
   return(r);
 }
+
+// Load an integer a variable value into a register.
+// Return the number of the register
+int cgloadglob(char *identifier){
+  int r = alloc_register();
+
+  fprintf(Outfile, "\tmovq\t%s(\%%rip), %s\n", identifier, reglist[r]);
+  return (r);
+}
+
 
 // Add two registers together and return
 // the number of the register with the result
@@ -134,4 +142,15 @@ void cgprintint(int r) {
   fprintf(Outfile, "\tmovq\t%s, %%rdi\n", reglist[r]);
   fprintf(Outfile, "\tcall\tprintint\n");
   free_register(r);
+}
+
+// Store a  register's value into a variable
+int cgstorglob(int r, char *identifier){
+  fprintf(Outfile, "\tmovq\t%s(\%%rip)\n", reglist[r], identifier);
+  return (r);
+}
+
+// Generate a global symbol
+void cgglobsym(char *sym){
+  fprintf(Outfile, "\t.comm\t%s,8,8\n", sym);
 }

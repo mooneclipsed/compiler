@@ -2,7 +2,9 @@
     "files.associations": {
         "cstdio": "cpp",
         "*.tcc": "c",
-        "functional": "c"
+        "functional": "c",
+        "tuple": "c",
+        "typeinfo": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
