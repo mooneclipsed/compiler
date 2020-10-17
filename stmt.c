@@ -2,19 +2,20 @@
 #include "data.h"
 #include "decl.h"
 
-//Parsing of statements
+// Parsing of statements
 
-//  statements: statement
-//       |      statement statements
-//       ;
 
-//  statement: 'print' expression ';'
-//       |     'int'   identifier ';'
-//       |     identifier '=' expression ';'
-//       ;
-
-//  identifier: T_IDENT
-//       ;
+// statements: statement
+//      |      statement statements
+//      ;
+//
+// statement: 'print' expression ';'
+//      |     'int'   identifier ';'
+//      |     identifier '=' expression ';'
+//      ;
+//
+// identifier: T_IDENT
+//      ;
 
 void print_statement(void) {
   struct ASTnode *tree;
@@ -34,57 +35,55 @@ void print_statement(void) {
   semi();
 }
 
-void assignment_statement(void){
-    struct ASTnode *left, *right, *tree;
-    int id;
+void assignment_statement(void) {
+  struct ASTnode *left, *right, *tree;
+  int id;
 
-    // Ensure we have an identifier
-    ident();
+  // Ensure we have an identifier
+  ident();
 
-    // Check it's been defined then make a leaf node for it
-    if((id == findglob(Text)) == -1){
-        fatals("Undeclared variable", Text);
-    }
-    right = mkastleaf(A_LVIDENT, id);
+  // Check it's been defined then make a leaf node for it
+  if ((id = findglob(Text)) == -1) {
+    fatals("Undeclared variable", Text);
+  }
+  right = mkastleaf(A_LVIDENT, id);
 
-    // Ensure we have an equals sign
-    match(T_EQUALS, "=");
+  // Ensure we have an equals sign
+  match(T_EQUALS, "=");
 
-    // Parse the following expression
-    left = binexpr(0);
+  // Parse the following expression
+  left = binexpr(0);
 
-    // Make an assignment AST tree
-    tree = mkastnode(A_ASSIGN, left, right, 0);
+  // Make an assignment AST tree
+  tree = mkastnode(A_ASSIGN, left, right, 0);
 
-    // Gnenrate the assembly code for the assignment
-    genAST(tree, -1);
-    genfreeregs();
+  // Generate the assembly code for the assignment
+  genAST(tree, -1);
+  genfreeregs();
 
-    // Match the following semicolon
-    semi();
-}
-
-// Parse one and more statements
-void statements(void){
-
-    while(1){
-        switch (Token.token)
-        {
-        case T_PRINT:
-            print_statement();
-            break;
-        case T_INT:
-            var_declaration();
-            break;
-        case T_IDENT:
-            assignment_statement();
-            break;
-        case T_EOF:
-            return;
-        default:
-            fatald("Syntax error, token", Token.token);
-        }
-    }
+  // Match the following semicolon
+  semi();
 }
 
 
+// Parse one or more statements
+void statements(void) {
+
+  while (1) {
+    switch (Token.token) {
+    case T_PRINT:
+      print_statement();
+      break;
+    case T_INT:
+      var_declaration();
+      break;
+    case T_IDENT:
+      assignment_statement();
+      break;
+    case T_EOF:
+      return;
+    default:
+      fatald("Syntax error, token", Token.token);
+    }
+  }
+}

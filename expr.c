@@ -10,32 +10,35 @@
 static struct ASTnode *primary(void) {
   struct ASTnode *n;
   int id;
-  // For an INTLIT token, make a leaf AST node for it
-  // and scan in the next token. Otherwise, a syntax error
-  // for any other token type.
+
   switch (Token.token) {
   case T_INTLIT:
+    // For an INTLIT token, make a leaf AST node for it.
     n = mkastleaf(A_INTLIT, Token.intvalue);
     break;
+
   case T_IDENT:
     // Check that this identifier exists
     id = findglob(Text);
-    if(id == -1)
-      fatals("Unknow variable", Text);
+    if (id == -1)
+      fatals("Unknown variable", Text);
 
-      // Make a leaf AST node for it
-      n = mkastleaf(A_IDENT, id);
-      break;
+    // Make a leaf AST node for it
+    n = mkastleaf(A_IDENT, id);
+    break;
+
   default:
     fatald("Syntax error, token", Token.token);
   }
+
+  // Scan in the next token and return the leaf node
   scan(&Token);
   return (n);
 }
 
 
 // Convert a binary operator token into an AST operation.
-int arithop(int tokentype) {
+static int arithop(int tokentype) {
   switch (tokentype) {
   case T_PLUS:
     return (A_ADD);
@@ -59,7 +62,6 @@ static int op_precedence(int tokentype) {
   int prec = OpPrec[tokentype];
   if (prec == 0)
     fatald("Syntax error, token", tokentype);
-
   return (prec);
 }
 
@@ -69,11 +71,11 @@ struct ASTnode *binexpr(int ptp) {
   struct ASTnode *left, *right;
   int tokentype;
 
-  // Get the integer literal on the left.
+  // Get the primary tree on the left.
   // Fetch the next token at the same time.
   left = primary();
 
-  // If hit s semicolon, return just the left node
+  // If we hit a semicolon, return just the left node
   tokentype = Token.token;
   if (tokentype == T_SEMI)
     return (left);
@@ -93,7 +95,7 @@ struct ASTnode *binexpr(int ptp) {
     left = mkastnode(arithop(tokentype), left, right, 0);
 
     // Update the details of the current token.
-    // If hit a semicolon, return just the left node
+    // If we hit a semicolon, return just the left node
     tokentype = Token.token;
     if (tokentype == T_SEMI)
       return (left);
