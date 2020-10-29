@@ -3,7 +3,7 @@
 #include "decl.h"
 
 // Generic code generator
-// Copyright (c) 2019 Warren Toomey, GPL3
+
 
 // Generate and return a new label number
 static int label(void) {
