@@ -1,6 +1,6 @@
 
 // Function prototypes for all compiler files
-
+// Copyright (c) 2019 Warren Toomey, GPL3
 // scan.c
 int scan(struct token *t);
 
@@ -12,7 +12,7 @@ struct ASTnode *mkastleaf(int op, int intvalue);
 struct ASTnode *mkastunary(int op, struct ASTnode *left, int intvalue);
 
 // gen.c
-int genAST(struct ASTnode *n, int reg, int parenASTop);
+int genAST(struct ASTnode *n, int reg, int parentASTop);
 void genpreamble();
 void genpostamble();
 void genfreeregs();
@@ -41,7 +41,7 @@ void cgjump(int l);
 struct ASTnode *binexpr(int ptp);
 
 // stmt.c
-struct ASTnode *compund_statement(void);
+struct ASTnode *compound_statement(void);
 
 // misc.c
 void match(int t, char *what);

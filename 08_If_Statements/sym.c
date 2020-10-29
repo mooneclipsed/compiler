@@ -3,6 +3,7 @@
 #include "decl.h"
 
 // Symbol table functions
+// Copyright (c) 2019 Warren Toomey, GPL3
 
 static int Globs = 0;		// Position of next free global symbol slot
 
