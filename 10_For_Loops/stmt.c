@@ -73,9 +73,9 @@ static struct ASTnode *assignment_statement(void) {
   // Make an assignment AST tree
   tree = mkastnode(A_ASSIGN, left, NULL, right, 0);
 
-  // Match the following semicolon
+  
   // and return the AST
-  semi();
+  
   return (tree);
 }
 
