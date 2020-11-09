@@ -163,33 +163,33 @@ int scan(struct token *t) {
       break;
     case '=':
       if ((c = next()) == '=') {
-	t->token = T_EQ;
+	      t->token = T_EQ;
       } else {
-	putback(c);
-	t->token = T_ASSIGN;
+	      putback(c);
+      	t->token = T_ASSIGN;
       }
       break;
     case '!':
       if ((c = next()) == '=') {
-	t->token = T_NE;
+	      t->token = T_NE;
       } else {
-	fatalc("Unrecognised character", c);
+	      fatalc("Unrecognised character", c);
       }
       break;
     case '<':
       if ((c = next()) == '=') {
-	t->token = T_LE;
+	      t->token = T_LE;
       } else {
-	putback(c);
-	t->token = T_LT;
+	      putback(c);
+	      t->token = T_LT;
       }
       break;
     case '>':
       if ((c = next()) == '=') {
-	t->token = T_GE;
+	      t->token = T_GE;
       } else {
-	putback(c);
-	t->token = T_GT;
+	      putback(c);
+	      t->token = T_GT;
       }
       break;
     default:
