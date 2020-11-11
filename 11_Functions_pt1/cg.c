@@ -51,29 +51,24 @@ void cgpreamble() {
 	"\tmovl\t%eax, %esi\n"
 	"\tleaq	.LC0(%rip), %rdi\n"
 	"\tmovl	$0, %eax\n"
-	"\tcall	printf@PLT\n"
-	"\tnop\n"
-	"\tleave\n"
-	"\tret\n"
-	"\n",
-	Outfile);
+	"\tcall	printf@PLT\n" "\tnop\n" "\tleave\n" "\tret\n" "\n", Outfile);
 }
 
 
 
 
-void cgfuncpreamble(char *name){
+void cgfuncpreamble(char *name) {
   fprintf(Outfile,
-  "\t.text\n"
-  "\t.globl\t%s\n"
-  "\t.type\t%s, @function\n"
-  "%s:\n" "\tpushq\t%%rbp\n"
-  "\tmovq\t%%rsp, %%rbq\n", name, name, name);
+	  "\t.text\n"
+	  "\t.globl\t%s\n"
+	  "\t.type\t%s, @function\n"
+	  "%s:\n" "\tpushq\t%%rbp\n"
+	  "\tmovq\t%%rsp, %%rbp\n", name, name, name);
 }
 
 // Print out the assembly postamble
 void cgfuncpostamble(){
-  fputs("\tmovl $0, %eax\n" "\tpopq     %rbp\n" "\tret\n", Outfile);
+  fputs("\tmovl	$0, %eax\n" "\tpopq	%rbp\n" "\tret\n", Outfile);
 }
 
 // Load an integer literal value into a register.
