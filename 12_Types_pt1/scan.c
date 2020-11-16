@@ -3,7 +3,7 @@
 #include "decl.h"
 
 // Lexical scanning
-
+// Copyright (c) 2019 Warren Toomey, GPL3
 
 // Return the position of character c
 // in string s, or -1 if c not found
@@ -94,31 +94,35 @@ static int scanident(int c, char *buf, int lim) {
 // to waste time strcmp()ing against all the keywords.
 static int keyword(char *s) {
   switch (*s) {
+    case 'c':
+      if (!strcmp(s, "char"))
+	return (T_CHAR);
+      break;
     case 'e':
       if (!strcmp(s, "else"))
-	      return (T_ELSE);
+	return (T_ELSE);
       break;
     case 'f':
       if (!strcmp(s, "for"))
-        return (T_FOR);
+	return (T_FOR);
       break;
     case 'i':
       if (!strcmp(s, "if"))
-	      return (T_IF);
+	return (T_IF);
       if (!strcmp(s, "int"))
-	      return (T_INT);
+	return (T_INT);
       break;
     case 'p':
       if (!strcmp(s, "print"))
-	      return (T_PRINT);
+	return (T_PRINT);
       break;
     case 'w':
-      if(!strcmp(s, "while"))
-        return (T_WHILE);
+      if (!strcmp(s, "while"))
+	return (T_WHILE);
       break;
     case 'v':
-      if(!strcmp(s, "void"))
-        return (T_VOID);
+      if (!strcmp(s, "void"))
+	return (T_VOID);
       break;
   }
   return (0);
@@ -167,33 +171,33 @@ int scan(struct token *t) {
       break;
     case '=':
       if ((c = next()) == '=') {
-	      t->token = T_EQ;
+	t->token = T_EQ;
       } else {
-	      putback(c);
-      	t->token = T_ASSIGN;
+	putback(c);
+	t->token = T_ASSIGN;
       }
       break;
     case '!':
       if ((c = next()) == '=') {
-	      t->token = T_NE;
+	t->token = T_NE;
       } else {
-	      fatalc("Unrecognised character", c);
+	fatalc("Unrecognised character", c);
       }
       break;
     case '<':
       if ((c = next()) == '=') {
-	      t->token = T_LE;
+	t->token = T_LE;
       } else {
-	      putback(c);
-	      t->token = T_LT;
+	putback(c);
+	t->token = T_LT;
       }
       break;
     case '>':
       if ((c = next()) == '=') {
-	      t->token = T_GE;
+	t->token = T_GE;
       } else {
-	      putback(c);
-	      t->token = T_GT;
+	putback(c);
+	t->token = T_GT;
       }
       break;
     default:

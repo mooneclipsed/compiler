@@ -3,14 +3,13 @@
 #include "decl.h"
 
 // AST tree functions
-
+// Copyright (c) 2019 Warren Toomey, GPL3
 
 // Build and return a generic AST node
 struct ASTnode *mkastnode(int op, int type,
-        struct ASTnode *left,
+			  struct ASTnode *left,
 			  struct ASTnode *mid,
 			  struct ASTnode *right, int intvalue) {
-
   struct ASTnode *n;
 
   // Malloc a new ASTnode
@@ -35,6 +34,7 @@ struct ASTnode *mkastleaf(int op, int type, int intvalue) {
 }
 
 // Make a unary AST node: only one child
-struct ASTnode *mkastunary(int op, int type, struct ASTnode *left, int intvalue) {
+struct ASTnode *mkastunary(int op, int type, struct ASTnode *left,
+			    int intvalue) {
   return (mkastnode(op, type, left, NULL, NULL, intvalue));
 }

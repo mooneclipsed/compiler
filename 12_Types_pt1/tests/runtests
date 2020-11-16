@@ -24,3 +24,4 @@ do if [ ! -f "out.$i" ]
      rm -f out out.s "trial.$i"
    fi
 done
+

@@ -3,7 +3,7 @@
 #include "decl.h"
 
 // Parsing of expressions
-
+// Copyright (c) 2019 Warren Toomey, GPL3
 
 // Parse a primary factor and return an
 // AST node representing it.
@@ -15,17 +15,17 @@ static struct ASTnode *primary(void) {
     case T_INTLIT:
       // For an INTLIT token, make a leaf AST node for it.
       // Make it a P_CHAR if it's within the P_CHAR range
-      if ((Token.intvalue >= 0) && (Token.intvalue) < 256)
-        n = mkastleaf(A_INTLIT, P_CHAR, Token.intvalue);
+      if ((Token.intvalue) >= 0 && (Token.intvalue < 256))
+	n = mkastleaf(A_INTLIT, P_CHAR, Token.intvalue);
       else
-        n = mkastleaf(A_INTLIT, P_INT, Token.intvalue);
+	n = mkastleaf(A_INTLIT, P_INT, Token.intvalue);
       break;
 
     case T_IDENT:
       // Check that this identifier exists
       id = findglob(Text);
       if (id == -1)
-	      fatals("Unknown variable", Text);
+	fatals("Unknown variable", Text);
 
       // Make a leaf AST node for it
       n = mkastleaf(A_IDENT, Gsym[id].type, id);
@@ -93,6 +93,7 @@ struct ASTnode *binexpr(int ptp) {
     // precedence of our token to build a sub-tree
     right = binexpr(OpPrec[tokentype]);
 
+    // Ensure the two types are compatible.
     lefttype = left->type;
     righttype = right->type;
     if (!type_compatible(&lefttype, &righttype, 0))
@@ -107,7 +108,7 @@ struct ASTnode *binexpr(int ptp) {
     // Join that sub-tree with ours. Convert the token
     // into an AST operation at the same time.
     left = mkastnode(arithop(tokentype), left->type, left, NULL, right, 0);
-    
+
     // Update the details of the current token.
     // If we hit a semicolon or ')', return just the left node
     tokentype = Token.token;

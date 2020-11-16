@@ -6,7 +6,7 @@
 #include <errno.h>
 
 // Compiler setup and top-level execution
-
+// Copyright (c) 2019 Warren Toomey, GPL3
 
 // Initialise global variables
 static void init() {
@@ -44,14 +44,12 @@ void main(int argc, char *argv[]) {
 
   scan(&Token);			// Get the first token from the input
   genpreamble();		// Output the preamble
-  while(1){
-    tree = function_declaration();	// Parse the function statement in the input
-    genAST(tree, NOREG, 0);	// Generate the assembly code for it
-    if(Token.token == T_EOF) // Stop when we reach EOF
+  while (1) {			// Parse a function and
+    tree = function_declaration();
+    genAST(tree, NOREG, 0);	// generate the assembly code for it
+    if (Token.token == T_EOF)	// Stop when we have reached EOF
       break;
   }
-  
-
   fclose(Outfile);		// Close the output file and exit
   exit(0);
 }

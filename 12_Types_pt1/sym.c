@@ -3,7 +3,7 @@
 #include "decl.h"
 
 // Symbol table functions
-
+// Copyright (c) 2019 Warren Toomey, GPL3
 
 static int Globs = 0;		// Position of next free global symbol slot
 
@@ -30,6 +30,7 @@ static int newglob(void) {
 }
 
 // Add a global symbol to the symbol table.
+// Also set up its type and structural type.
 // Return the slot number in the symbol table
 int addglob(char *name, int type, int stype) {
   int y;
@@ -43,6 +44,6 @@ int addglob(char *name, int type, int stype) {
   y = newglob();
   Gsym[y].name = strdup(name);
   Gsym[y].type = type;
-  Gsym[y].type = stype;
+  Gsym[y].stype = stype;
   return (y);
 }

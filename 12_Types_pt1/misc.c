@@ -3,7 +3,7 @@
 #include "decl.h"
 
 // Miscellaneous functions
-
+// Copyright (c) 2019 Warren Toomey, GPL3
 
 // Ensure that the current token is t,
 // and fetch the next token. Otherwise
