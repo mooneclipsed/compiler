@@ -3,7 +3,7 @@
 #endif
 
 // Global variables
-// Copyright (c) 2019 Warren Toomey, GPL3
+
 
 extern_ int Line;		// Current line number
 extern_ int Putback;		// Character put back by scanner

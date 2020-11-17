@@ -3,7 +3,7 @@
 #include "decl.h"
 
 // Types and type handling
-// Copyright (c) 2019 Warren Toomey, GPL3
+
 
 // Given two primitive types,
 // return true if they are compatible,

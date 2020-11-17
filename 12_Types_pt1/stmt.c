@@ -3,7 +3,7 @@
 #include "decl.h"
 
 // Parsing of statements
-// Copyright (c) 2019 Warren Toomey, GPL3
+
 
 // Prototypes
 static struct ASTnode *single_statement(void);

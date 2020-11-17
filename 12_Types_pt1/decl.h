@@ -1,6 +1,6 @@
 
 // Function prototypes for all compiler files
-// Copyright (c) 2019 Warren Toomey, GPL3
+
 // scan.c
 int scan(struct token *t);
 

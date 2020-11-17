@@ -3,7 +3,7 @@
 #include "decl.h"
 
 // Parsing of declarations
-// Copyright (c) 2019 Warren Toomey, GPL3
+
 
 
 // Parse the current token and

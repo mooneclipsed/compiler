@@ -6,7 +6,7 @@
 #include <errno.h>
 
 // Compiler setup and top-level execution
-// Copyright (c) 2019 Warren Toomey, GPL3
+
 
 // Initialise global variables
 static void init() {
