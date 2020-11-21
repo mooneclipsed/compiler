@@ -23,13 +23,13 @@ void genprintint(int reg);
 void genglobsym(int id);
 int genlabel(void);
 int genprimsize(int type);
-int genreturn(int reg, int id);
+void genreturn(int reg, int id);
 
 // cg.c
 void freeall_registers(void);
 void cgpreamble();
 void cgfuncpreamble(int id);
-void cgfuncpostamble();
+void cgfuncpostamble(int id);
 int cgloadint(int value, int type);
 int cgloadglob(int id);
 int cgadd(int r1, int r2);

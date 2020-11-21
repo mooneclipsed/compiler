@@ -108,7 +108,7 @@ int genAST(struct ASTnode *n, int reg, int parentASTop) {
       // Generate the function's preamble before the code
       cgfuncpreamble(n->v.id);
       genAST(n->left, NOREG, n->op);
-      cgfuncpostamble();
+      cgfuncpostamble(n->v.id);
       return (NOREG);
   }
 

@@ -139,6 +139,18 @@ void cgprintint(int r) {
   free_register(r);
 }
 
+// Call a function with one argument from the given register
+// Return the register with the result
+int cgcall(int r, int id) {
+  // Get a new register
+  int outr = alloc_register();
+  fprintf(Outfile, "\tmovq\t%s, %%rdi\n", reglist[r]);
+  fprintf(Outfile, "\tcall\t%s\n", Gsym[id].name);
+  fprintf(Outfile, "\tmovq\t%%rax, %s\n", reglist[outr]);
+  free_register(r);
+  return (outr);
+}
+
 // Store a register's value into a variable
 int cgstorglob(int r, int id) {
   switch (Gsym[id].type) {
@@ -157,6 +169,18 @@ int cgstorglob(int r, int id) {
       fatald("Bad type in cgloadglob:", Gsym[id].type);
   }
   return (r);
+}
+
+// Array of type sizes in P_XXX order
+// 0 means no size. P_NONE, P_VOID, P_CHAR, P_INT, P_LONG
+static int psize[] = { 0,      0,      1,     4,     8 };
+
+// Given a P_XXX type value, return the 
+// size of a primitive type in bytes
+int cgprimsize(int type) {
+  if (type < P_NONE || type > P_LONG)
+    fatal ("Bad type in cgprimsize()");
+  return (psize[type]);
 }
 
 // Generate a global symbol
@@ -222,29 +246,9 @@ int cgwiden(int r, int oldtype, int newtype) {
   return (r);
 }
 
-// Array of type sizes in P_XXX order
-// 0 means no size. P_NONE, P_VOID, P_CHAR, P_INT, P_LONG
-static int psize[] = { 0,      0,      1,     4,     8 };
 
-// Given a P_XXX type value, return the 
-// size of a primitive type in bytes
-int cgprimsize(int type) {
-  if (type < P_NONE || type > P_LONG)
-    fatal ("Bad type in cgprimsize()");
-  return (psize[type]);
-}
 
-// Call a function with one argument from the given register
-// Return the register with the result
-int cgcall(int r, int id) {
-  // Get a new register
-  int outr = alloc_register();
-  fprintf(Outfile, "\tmovq\t%s, %%rdi\n", reglist[r]);
-  fprintf(Outfile, "\tcall\t%s\n", Gsym[id].name);
-  fprintf(Outfile, "\tmovq\t%%rax, %s\n", reglist[outr]);
-  free_register(r);
-  return (outr);
-}
+
 
 // Generate code to return a value from a function
 void cgreturn(int reg, int id) {

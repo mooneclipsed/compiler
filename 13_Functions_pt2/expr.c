@@ -4,6 +4,29 @@
 
 // Parsing of expressions
 
+// Parse a function call with a single expression
+// argument and return its AST
+struct ASTnode *funccall(void){
+  struct ASTnode *tree;
+  int id;
+
+  if ((id = findglob(Text)) == -1)
+    fatals("Undeclared function", Text);
+  
+  lparen();
+
+  // Parse the following expression
+  tree = binexpr(0);
+
+  // Build the function call ASTnode. Store the
+  // function's return type as this node's type
+  // Also record the function's symbol-id
+  tree = mkastunary(A_FUNCCALL, Gsym[id].type, tree, id);
+
+  rparen();
+  return (tree);
+}
+
 
 // Parse a primary factor and return an
 // AST node representing it.
@@ -129,26 +152,4 @@ struct ASTnode *binexpr(int ptp) {
   return (left);
 }
 
-// Parse a function call with a single expression
-// argument and return its AST
-struct ASTnode *funccall(void){
-  struct ASTnode *tree;
-  int id;
-
-  if ((id = findglob(Text)) == -1)
-    fatals("Undeclared function", Text);
-  
-  lparen();
-
-  // Parse the following expression
-  tree = binexpr(0);
-
-  // Build the function call ASTnode. Store the
-  // function's return type as this node's type
-  // Also record the function's symbol-id
-  tree = mkastunary(A_FUNCCALL, Gsym[id].type, tree, id);
-
-  rparen();
-  return (tree);
-}
 

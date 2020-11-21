@@ -205,29 +205,6 @@ static struct ASTnode *for_statement(void) {
   return (mkastnode(A_GLUE, P_NONE, preopAST, NULL, tree, 0));
 }
 
-// Parse a single statement
-// and return its AST
-static struct ASTnode *single_statement(void) {
-  switch (Token.token) {
-    case T_PRINT:
-      return (print_statement());
-    case T_CHAR:
-    case T_INT:
-      var_declaration();
-      return (NULL);		// No AST generated here
-    case T_IDENT:
-      return (assignment_statement());
-    case T_IF:
-      return (if_statement());
-    case T_WHILE:
-      return (while_statement());
-    case T_FOR:
-      return (for_statement());
-    default:
-      fatald("Syntax error, token", Token.token);
-  }
-}
-
 // Parse a return statement and return its AST
 static struct ASTnode *return_statement(void){
   struct ASTnode *tree;
@@ -254,6 +231,33 @@ static struct ASTnode *return_statement(void){
   return (tree);
 }
 
+// Parse a single statement
+// and return its AST
+static struct ASTnode *single_statement(void) {
+  switch (Token.token) {
+    case T_PRINT:
+      return (print_statement());
+    case T_CHAR:
+    case T_INT:
+    case T_LONG:
+      var_declaration();
+      return (NULL);		// No AST generated here
+    case T_IDENT:
+      return (assignment_statement());
+    case T_IF:
+      return (if_statement());
+    case T_WHILE:
+      return (while_statement());
+    case T_FOR:
+      return (for_statement());
+    case T_RETURN:
+      return (return_statement());
+    default:
+      fatald("Syntax error, token", Token.token);
+  }
+}
+
+
 // Parse a compound statement
 // and return its AST
 struct ASTnode *compound_statement(void) {
@@ -268,7 +272,8 @@ struct ASTnode *compound_statement(void) {
     tree = single_statement();
 
     // Some statements must be followed by a semicolon
-    if (tree != NULL && (tree->op == A_PRINT || tree->op == A_ASSIGN))
+    if (tree != NULL && (tree->op == A_PRINT || tree->op == A_ASSIGN ||
+			                    tree->op == A_RETURN || tree->op == A_FUNCCALL))
       semi();
 
     // For each new tree, either save it in left
