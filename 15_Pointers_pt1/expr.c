@@ -122,6 +122,9 @@ struct ASTnode *prefix(void) {
 
       if (tree->op != A_IDENT && tree->op != A_DEREF)
         fatal("* operator must be followed by an identifier or *");
+
+      // Prepend an A_DEREF operation to the tree
+      tree = mkastunary(A_DEREF, value_at(tree->type), tree, 0);
       break;
 
       default:

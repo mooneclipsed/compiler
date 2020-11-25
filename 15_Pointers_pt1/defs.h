@@ -6,7 +6,7 @@
 // Structure and enum definitions
 
 
-#define TEXTLEN		      512	// Length of symbols in input
+#define TEXTLEN		512	// Length of symbols in input
 #define NSYMBOLS        1024	// Number of symbol table entries
 
 // Token types
@@ -25,7 +25,6 @@ enum {
   T_AMPER, T_LOGAND,
   // Other keywords
   T_PRINT, T_IF, T_ELSE, T_WHILE, T_FOR, T_RETURN
-  
 };
 
 // Token structure
@@ -42,7 +41,7 @@ enum {
   A_INTLIT,
   A_IDENT, A_LVIDENT, A_ASSIGN, A_PRINT, A_GLUE,
   A_IF, A_WHILE, A_FUNCTION, A_WIDEN, A_RETURN,
-  A_FUNCCALL, A_ADDR, A_DEREF
+  A_FUNCCALL, A_DEREF, A_ADDR
 };
 
 // Primitive types
@@ -58,10 +57,10 @@ struct ASTnode {
   struct ASTnode *left;		// Left, middle and right child trees
   struct ASTnode *mid;
   struct ASTnode *right;
-  union {
-    int intvalue;		// For A_INTLIT, the integer value
-    int id;			// For A_IDENT, the symbol slot number
-  } v;				// For A_FUNCTION, the symbol slot number
+  union {			// For A_INTLIT, the integer value
+    int intvalue;		// For A_IDENT, the symbol slot number
+    int id;			// For A_FUNCTION, the symbol slot number
+  } v;				// For A_FUNCCALL, the symbol slot number
 };
 
 #define NOREG	-1		// Use NOREG when the AST generation
@@ -77,5 +76,5 @@ struct symtable {
   char *name;			// Name of a symbol
   int type;			// Primitive type for the symbol
   int stype;			// Structural type for the symbol
-  int endlabel;   // For S_FUNCTIONs, the end label
+  int endlabel;			// For S_FUNCTIONs, the end label
 };

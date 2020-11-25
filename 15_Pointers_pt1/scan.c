@@ -126,6 +126,7 @@ static int keyword(char *s) {
     case 'l':
       if (!strcmp(s, "long"))
   return (T_LONG);
+      break;
     case 'p':
       if (!strcmp(s, "print"))
 	return (T_PRINT);
@@ -226,7 +227,7 @@ int scan(struct token *t) {
       }
       break;
     case '&':
-      if ((c == next()) == '&') {
+      if ((c = next()) == '&') {
         t->token = T_LOGAND;
       } else {
         putback(c);
