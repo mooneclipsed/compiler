@@ -184,7 +184,7 @@ int cgstorglob(int r, int id) {
 
 // Array of type sizes in P_XXX order.
 // 0 means no size.
-static int psize[] = { 0, 0, 1, 4, 8, 8, 8, 8 };
+static int psize[] = { 0, 0, 1, 4, 8, 8, 8, 8, 8 };
 
 // Given a P_XXX type value, return the
 // size of a primitive type in bytes.
@@ -201,7 +201,19 @@ void cgglobsym(int id) {
   // Get the size of the type
   typesize = cgprimsize(Gsym[id].type);
 
-  fprintf(Outfile, "\t.comm\t%s,%d,%d\n", Gsym[id].name, typesize, typesize);
+  // Generate the global identity and the label
+  fprintf(Outfile, "\t.data\n" "\t.globl\t%s\n", Gsym[id].name);
+  fprintf(Outfile, "%s:", Gsym[id].name);
+
+  // Generate the space
+  for (int i=0; i < Gsym[id].size; i++) {
+    switch (typesize) {
+      case 1: fprintf(Outfile, "\t.byte\t0\n"); break;
+      case 4: fprintf(Outfile, "\t.long\t0\n"); break;
+      case 8: fprintf(Outfile, "\t.quad\t0\n"); break;
+      default: fatald("Unknown typesize in cgglobasym: ", typesize);
+    }
+  }
 }
 
 // List of comparison instructions,

@@ -18,8 +18,8 @@ int findglob(char *s) {
   return (-1);
 }
 
-// Get the position of a new global symbol slot, or die
-// if we've run out of positions.
+// Get the position of a new global symbol slot, 
+// or die if we've run out of positions.
 static int newglob(void) {
   int p;
 
@@ -31,7 +31,7 @@ static int newglob(void) {
 // Add a global symbol to the symbol table.
 // Also set up its type and structural type.
 // Return the slot number in the symbol table
-int addglob(char *name, int type, int stype, int endlabel) {
+int addglob(char *name, int type, int stype, int endlabel, int size) {
   int y;
 
   // If this is already in the symbol table, return the existing slot
@@ -45,5 +45,6 @@ int addglob(char *name, int type, int stype, int endlabel) {
   Gsym[y].type = type;
   Gsym[y].stype = stype;
   Gsym[y].endlabel = endlabel;
+  Gsym[y].size = size;
   return (y);
 }

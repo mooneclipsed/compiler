@@ -29,31 +29,38 @@ int parse_type(void) {
   return (type);
 }
 
-// variable_declaration: 'int' identifier ';'  ;
-// Parse the declaration of a variable
+// Parse the declaration of a variable 
+// or an array with a given size
+// The identifier has been scanned & we have the type
 void var_declaration(int type) {
   int id;
 
-  while(1) {
-    // Text now has the identifier's name
-    // Add it as a konwn identifier
-    // and generate its space in assembly
-    id = addglob(Text, type, S_VARIABLE, 0);
-    genglobsym(id);
+  // Text now has the identifier's name
+  // If the next token is a '['
+  if (Token.token == T_LBRACKET) {
+    scan(&Token);
 
-    if (Token.token == T_SEMI) {
-      scan(&Token);
-      return;
+    // Check we have an array size
+    if (Token.token == T_INTLIT) {
+      // Add this as a known array and generate its space in assembly.
+      // We treat the array as a pointer to its elements' type
+      id = addglob(Text, pointer_to(type), S_ARRAY, 0, Token.intvalue);
+      genglobsym(id);
     }
-    // If the next token is a comma, skip it
-    // get the identifier and loop back
-    if (Token.token == T_COMMA) {
-      scan(&Token);
-      ident();
-      continue;
-    }
-    fatal("Missing , or ; after identifier");
+
+    scan(&Token);
+    match(T_RBRACKET, "]");
+
+  }else {
+    // Add this as a known scalar
+    // and generate its space in assembly
+    id = addglob(Text, type, S_VARIABLE, 0, 1);
+    genglobsym(id);
   }
+
+  // Get the trailing semicolon
+  semi();
+
 }
 
 // For now we have a very simplistic function definition grammar
@@ -70,7 +77,7 @@ struct ASTnode *function_declaration(int type) {
   // to the symbol table, and set the Functionid global
   // to the function's symbol-id
   endlabel = genlabel();
-  nameslot = addglob(Text, type, S_FUNCTION, endlabel);
+  nameslot = addglob(Text, type, S_FUNCTION, endlabel, 0);
   Functionid = nameslot;
 
   lparen();

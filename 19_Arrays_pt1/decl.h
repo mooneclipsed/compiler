@@ -76,7 +76,7 @@ void fatalc(char *s, int c);
 
 // sym.c
 int findglob(char *s);
-int addglob(char *name, int type, int stype, int endlabel);
+int addglob(char *name, int type, int stype, int endlabel, int size);
 
 // decl.c
 void var_declaration(int type);
@@ -87,3 +87,4 @@ int parse_type(void);
 struct ASTnode *modify_type(struct ASTnode *tree, int rtype, int op);
 int value_at(int type);
 int pointer_to(int type);
+int inttype(int type);

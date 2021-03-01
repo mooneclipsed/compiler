@@ -198,6 +198,12 @@ int scan(struct token *t) {
     case ',':
       t->token = T_COMMA;
       break;
+    case '[':
+      t->token = T_LBRACKET;
+      break;
+    case ']':
+      t->token = T_RBRACKET;
+      break;
     case '=':
       if ((c = next()) == '=') {
 	      t->token = T_EQ;
