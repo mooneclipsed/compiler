@@ -13,9 +13,8 @@ static struct ASTnode *single_statement(void);
 //      |      statement statements
 //      ;
 //
-// statement: print_statement
+// statement: for_statement
 //      |     declaration
-//      |     assignment_statement
 //      |     if_statement
 //      |     while_statement
 //      ;
@@ -206,7 +205,7 @@ struct ASTnode *compound_statement(void) {
     tree = single_statement();
 
     // Some statements must be followed by a semicolon
-    if (tree != NULL && (tree->op == A_PRINT || 
+    if (tree != NULL && (tree->op == A_ASSIGN || 
 			                    tree->op == A_RETURN || tree->op == A_FUNCCALL))
       semi();
 

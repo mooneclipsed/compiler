@@ -31,29 +31,18 @@ int parse_type(void) {
 
 // variable_declaration: 'int' identifier ';'  ;
 // Parse the declaration of a variable
+// The identifier has been scanned & we have the type.
 void var_declaration(int type) {
   int id;
 
-  while(1) {
     // Text now has the identifier's name
     // Add it as a konwn identifier
     // and generate its space in assembly
     id = addglob(Text, type, S_VARIABLE, 0);
     genglobsym(id);
-
-    if (Token.token == T_SEMI) {
-      scan(&Token);
-      return;
-    }
-    // If the next token is a comma, skip it
-    // get the identifier and loop back
-    if (Token.token == T_COMMA) {
-      scan(&Token);
-      ident();
-      continue;
-    }
-    fatal("Missing , or ; after identifier");
-  }
+    // Get the trailing semicolon.
+    semi();
+  
 }
 
 // For now we have a very simplistic function definition grammar

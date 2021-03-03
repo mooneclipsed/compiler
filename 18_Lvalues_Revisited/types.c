@@ -50,6 +50,12 @@ int value_at(int type) {
   return (newtype);
 }
 
+// Given an AST tree and a type which we want it to become,
+// possibly modify the tree by widening or scaling so that
+// it is compatible with this type. Return the original tree
+// if no changes occurred, a modified tree, or NULL if the
+// tree is not compatible with the given type.
+// If this will be part of a binary operation, the AST op is not zero.
 struct ASTnode *modify_type(struct ASTnode *tree, int rtype, int op) {
   int ltype;
   int lsize, rsize;
@@ -66,7 +72,7 @@ struct ASTnode *modify_type(struct ASTnode *tree, int rtype, int op) {
     rsize = genprimsize(rtype);
 
     // Tree's size is too big
-    if (lsize > rsize) return (NULL);;
+    if (lsize > rsize) return (NULL);
 
     if (rsize > lsize) return (mkastunary(A_WIDEN, rtype, tree, 0));
 

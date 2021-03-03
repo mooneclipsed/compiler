@@ -151,6 +151,8 @@ static int OpPrec[] = {
 // Check that we have a binary operator and
 // return its precedence.
 static int op_precedence(int tokentype) {
+  if (tokentype >= T_VOID)
+    fatald("Token with no precedence in on_precedence:", tokentype);
   int prec = OpPrec[tokentype];
   if (prec == 0)
     fatald("Syntax error, token", tokentype);
@@ -268,9 +270,9 @@ struct ASTnode *binexpr(int ptp) {
     left = mkastnode(binastop(tokentype), left->type, left, NULL, right, 0);
 
     // Update the details of the current token.
-    // If we hit a semicolon or ')', return just the left node
+    // If we hit a semicolon or ')' or ']', return just the left node
     tokentype = Token.token;
-    if (tokentype == T_SEMI || tokentype == T_RPAREN){
+    if (tokentype == T_SEMI || tokentype == T_RPAREN || tokentype == T_RBRACKET){
       left->rvalue = 1;
       return (left);
     }

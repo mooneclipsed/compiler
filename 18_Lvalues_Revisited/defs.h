@@ -23,9 +23,9 @@ enum {
   // Structural tokens
   T_INTLIT, T_SEMI, T_IDENT,
   T_LBRACE, T_RBRACE, T_LPAREN, T_RPAREN,
-  T_AMPER, T_LOGAND, T_COMMA,
+  T_AMPER, T_LOGAND,
   // Other keywords
-  T_PRINT, T_IF, T_ELSE, T_WHILE, T_FOR, T_RETURN
+  T_IF, T_ELSE, T_WHILE, T_FOR, T_RETURN
 };
 
 // Token structure
@@ -37,10 +37,9 @@ struct token {
 // AST node types. The first few line up
 // with the related tokens
 enum {
-  A_ADD = 1, A_SUBTRACT, A_MULTIPLY, A_DIVIDE,
+  A_ASSIGN= 1, A_ADD, A_SUBTRACT, A_MULTIPLY, A_DIVIDE,
   A_EQ, A_NE, A_LT, A_GT, A_LE, A_GE,
-  A_INTLIT,
-  A_IDENT, A_LVIDENT, A_ASSIGN, A_PRINT, A_GLUE,
+  A_INTLIT, A_IDENT, A_GLUE,
   A_IF, A_WHILE, A_FUNCTION, A_WIDEN, A_RETURN,
   A_FUNCCALL, A_DEREF, A_ADDR, A_SCALE
 };

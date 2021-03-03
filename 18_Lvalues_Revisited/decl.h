@@ -13,7 +13,7 @@ struct ASTnode *mkastnode(int op, int type,
 struct ASTnode *mkastleaf(int op, int type, int intvalue);
 struct ASTnode *mkastunary(int op, int type,
 			    struct ASTnode *left, int intvalue);
-void dumpAST(struct ASTnode *n, int label, int level);
+void dumpAST(struct ASTnode *n, int label, int parentASTop);
 
 // gen.c
 int genAST(struct ASTnode *n, int reg, int parentASTop);

@@ -159,6 +159,12 @@ int cgcall(int r, int id) {
   return (outr);
 }
 
+// Shift a register left by a constant
+int cgshlconst(int r, int val) {
+  fprintf (Outfile, "\tsalq\t$%d, %s\n", val, reglist[r]);
+  return (r);
+}
+
 // Store a register's value into a variable
 int cgstorglob(int r, int id) {
   switch (Gsym[id].type) {
@@ -184,7 +190,7 @@ int cgstorglob(int r, int id) {
 
 // Array of type sizes in P_XXX order.
 // 0 means no size.
-static int psize[] = { 0, 0, 1, 4, 8, 8, 8, 8 };
+static int psize[] = { 0, 0, 1, 4, 8, 8, 8, 8, 8 };
 
 // Given a P_XXX type value, return the
 // size of a primitive type in bytes.
@@ -201,7 +207,13 @@ void cgglobsym(int id) {
   // Get the size of the type
   typesize = cgprimsize(Gsym[id].type);
 
-  fprintf(Outfile, "\t.comm\t%s,%d,%d\n", Gsym[id].name, typesize, typesize);
+  fprintf(Outfile, "\t.data\n" "\t.globl\t%s\n", Gsym[id].name);
+  switch(typesize) {
+    case 1: fprintf(Outfile, "%s:\t.byte\t0\n", Gsym[id].name); break;
+    case 4: fprintf(Outfile, "%s:\t.long\t0\n", Gsym[id].name); break;
+    case 8: fprintf(Outfile, "%s:\t.quad\t0\n", Gsym[id].name); break;
+    default: fatald("Unknown typesize in cgglobsym: ", typesize);
+  }
 }
 
 // List of comparison instructions,
@@ -300,13 +312,9 @@ int cgderef(int r, int type) {
     case P_LONGPTR:
       fprintf(Outfile, "\tmovq\t(%s), %s\n", reglist[r], reglist[r]);
       break;
+    default:
+      fatald("Can't cgderef on type:", type);
   }
-  return (r);
-}
-
-// Shift a register left by a constant
-int cgshlconst(int r, int val) {
-  fprintf (Outfile, "\tsalq\t$%d, %s\n", val, reglist[r]);
   return (r);
 }
 
