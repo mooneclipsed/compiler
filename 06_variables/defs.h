@@ -6,7 +6,7 @@
 // Structure and enum definitions
 
 
-#define TEXTLEN		512	// Length of symbols in input
+#define TEXTLEN		    512	        // Length of symbols in input
 #define NSYMBOLS        1024	// Number of symbol table entries
 
 // Token types
