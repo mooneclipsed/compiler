@@ -40,6 +40,7 @@ int addglob(char *name) {
   // Otherwise get a new slot, fill it in and
   // return the slot number
   y = newglob();
+  // store the identifier in the Gsym of index 'y'.
   Gsym[y].name = strdup(name);
   return (y);
 }
