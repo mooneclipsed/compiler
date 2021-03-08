@@ -22,6 +22,7 @@ void print_statement(void) {
   int reg;
 
   // Match a 'print' as the first token
+  // after function match, scan next token
   match(T_PRINT, "print");
 
   // Parse the following expression and

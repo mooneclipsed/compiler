@@ -143,7 +143,7 @@ void cgglobsym(char *sym) {
 
 // Compare two registers.
 static int cgcompare(int r1, int r2, char *how){
-  fprintf(Outfile, "\tcmp\t%s, %s\n", reglist[r2], reglist[r1]);
+  fprintf(Outfile, "\tcmpq\t%s, %s\n", reglist[r2], reglist[r1]);
   fprintf(Outfile, "\t%s\t%s\n", how, breglist[r2]);
   fprintf(Outfile, "\tandq\t$255,%s\n", reglist[r2]);
   free_register(r1);
