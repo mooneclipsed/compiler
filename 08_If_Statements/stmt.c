@@ -110,6 +110,7 @@ struct ASTnode *if_statement(void) {
 }
 
 
+
 // Parse a compound statement
 // and return its AST
 struct ASTnode *compound_statement(void) {
@@ -122,25 +123,25 @@ struct ASTnode *compound_statement(void) {
   while (1) {
     switch (Token.token) {
       case T_PRINT:
-	tree = print_statement();
-	break;
+        tree = print_statement();
+        break;
       case T_INT:
-	var_declaration();
-	tree = NULL;		// No AST generated here
-	break;
+        var_declaration();
+        tree = NULL;            // No AST generated here
+        break;
       case T_IDENT:
-	tree = assignment_statement();
-	break;
+        tree = assignment_statement();
+        break;
       case T_IF:
-	tree = if_statement();
-	break;
-      case T_RBRACE:
-	// When we hit a right curly bracket,
-	// skip past it and return the AST
-	rbrace();
-	return (left);
+        tree = if_statement();
+        break;
+    case T_RBRACE:
+        // When we hit a right curly bracket,
+        // skip past it and return the AST
+        rbrace();
+        return (left);
       default:
-	fatald("Syntax error, token", Token.token);
+        fatald("Syntax error, token", Token.token);
     }
 
     // For each new tree, either save it in left
@@ -148,9 +149,9 @@ struct ASTnode *compound_statement(void) {
     // new tree together
     if (tree) {
       if (left == NULL)
-	left = tree;
+        left = tree;
       else
-	left = mkastnode(A_GLUE, left, NULL, tree, 0);
+        left = mkastnode(A_GLUE, left, NULL, tree, 0);
     }
   }
 }

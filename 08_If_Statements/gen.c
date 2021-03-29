@@ -142,3 +142,4 @@ void genprintint(int reg) {
 void genglobsym(char *s) {
   cgglobsym(s);
 }
+
