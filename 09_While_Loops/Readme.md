@@ -1,51 +1,26 @@
-```
- compound_statement: '{' '}'          // empty, i.e. no statement
-      |      '{' statement '}'
-      |      '{' statement statements '}'
-      ;
+## While Loops
 
- statement: print_statement
-      |     declaration
-      |     assignment_statement
-      |     if_statement
-      ;
+### 类型
+Lstart: evaluate condition
+	jump to Lend if condition false
+	statements
+	jump to Lstart
+Lend:
 
- print_statement: 'print' expression ';'  ;
+先解析条件， 然后判断是否跳转。
 
- declaration: 'int' identifier ';'  ;
+### New Tokens
+T_WHILE
+### Parsing the While Syntax
+while 的条件解析与if相似， while 的 statement比if构造还少了一颗子树。
 
- assignment_statement: identifier '=' expression ';'   ;
+### Generic Code Generation
+while 生成代码方式也与if 相似。
 
- if_statement: if_head
-      |        if_head 'else' compound_statement
-      ;
+### int cgcompare_and_jump(int ASTop, int r1, int r2, int label)
+作用：生成比较跳转汇编代码，
+参数：ASTtop 是 因为目前限制了一部分判断条件。
+     r1， 存储的第一个比较数，存在寄存器中
+     label， 跳转地址， 也存储在寄存器中。
 
- if_head: 'if' '(' true_false_expression ')' compound_statement  ;
-```
-
-generate a single AST tree for the whole input with the parser.
-
-为整个输入构建单个大的AST tree
-
-
-
-recursive descent parser
-
-暂时if（）只处理A_EQ, A_NE, A_LT, A_GT, A_LE or A_GE 
-
-6种状态
-
-A if tree.
-
-```
-                      IF
-                    / |  \
-                   /  |   \
-                  /   |    \
-                 /    |     \
-                /     |      \
-               /      |       \
-      condition   statements   statements
-```
-
-我们把新获得的子树与现在存在的树连接起来。
+### Makefile
