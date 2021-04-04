@@ -45,9 +45,9 @@ static struct ASTnode *print_statement(void) {
   // Make an print AST tree
   tree = mkastunary(A_PRINT, tree, 0);
 
-  // Match the following semicolon
+
   // and return the AST
-  semi();
+
   return (tree);
 }
 
@@ -213,8 +213,10 @@ struct ASTnode *compound_statement(void) {
 
       // Some statements must be followed by a semicolon
       if(tree != NULL &&
-         (tree->op == A_PRINT || tree->op == A_ASSIGN))
-         semi();
+         (tree->op == A_PRINT || tree->op == A_ASSIGN)){
+           semi();
+         }
+         
       
       // For each new tree, either save it in left
       // if left is empty, or glue the left and the
