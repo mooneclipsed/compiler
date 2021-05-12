@@ -201,21 +201,21 @@ int scan(struct token *t) {
       // If it's a digit, scan the
       // literal integer value in
       if (isdigit(c)) {
-	t->intvalue = scanint(c);
-	t->token = T_INTLIT;
-	break;
+        t->intvalue = scanint(c);
+        t->token = T_INTLIT;
+        break;
       } else if (isalpha(c) || '_' == c) {
-	// Read in a keyword or identifier
-	scanident(c, Text, TEXTLEN);
+        // Read in a keyword or identifier
+        scanident(c, Text, TEXTLEN);
 
-	// If it's a recognised keyword, return that token
-	if (tokentype = keyword(Text)) {
-	  t->token = tokentype;
-	  break;
-	}
-	// Not a recognised keyword, so it must be an identifier
-	t->token = T_IDENT;
-	break;
+        // If it's a recognised keyword, return that token
+        if (tokentype = keyword(Text)) {
+          t->token = tokentype;
+          break;
+        }
+        // Not a recognised keyword, so it must be an identifier
+        t->token = T_IDENT;
+        break;
       }
       // The character isn't part of any recognised token, error
       fatalc("Unrecognised character", c);

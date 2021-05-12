@@ -1,51 +1,15 @@
-```
- compound_statement: '{' '}'          // empty, i.e. no statement
-      |      '{' statement '}'
-      |      '{' statement statements '}'
-      ;
+## Functions_pt1
+为编译器添加函数的功能，第一部分。
+* char, int, long 三种类型
+* 返回值的类型需要匹配
+* 每个函数的参数个数存储
+* 局部变量与全局变量
 
- statement: print_statement
-      |     declaration
-      |     assignment_statement
-      |     if_statement
-      ;
+我们目前先只让这些函数可以生成代码，但是只在main（）函数中被调用。
 
- print_statement: 'print' expression ';'  ;
+### struct ASTnode *function_declaration(void)
+parameters: void
+return: ASTnode *
+functions: 识别一个函数类型,执行语法检查和AST构建,目前还没有语义检测功能。
 
- declaration: 'int' identifier ';'  ;
-
- assignment_statement: identifier '=' expression ';'   ;
-
- if_statement: if_head
-      |        if_head 'else' compound_statement
-      ;
-
- if_head: 'if' '(' true_false_expression ')' compound_statement  ;
-```
-
-generate a single AST tree for the whole input with the parser.
-
-为整个输入构建单个大的AST tree
-
-
-
-recursive descent parser
-
-暂时if（）只处理A_EQ, A_NE, A_LT, A_GT, A_LE or A_GE 
-
-6种状态
-
-A if tree.
-
-```
-                      IF
-                    / |  \
-                   /  |   \
-                  /   |    \
-                 /    |     \
-                /     |      \
-               /      |       \
-      condition   statements   statements
-```
-
-我们把新获得的子树与现在存在的树连接起来。
+### Generate code x86-64

@@ -21,7 +21,7 @@ printint:
 	.type	main, @function
 main:
 	pushq	%rbp
-	movq	%rsp, %rbq
+	movq	%rsp, %rbp
 	movq	$1, %r8
 	movq	%r8, i(%rip)
 L1:
@@ -38,6 +38,6 @@ L1:
 	movq	%r9, i(%rip)
 	jmp	L1
 L2:
-	movl $0, %eax
-	popq     %rbp
+	movl	$0, %eax
+	popq	 %rbp
 	ret
